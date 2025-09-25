@@ -1,0 +1,67 @@
+/* in frontend/src/Dashboard.css */
+.Dashboard {
+  background-color: #f4f7f6;
+}
+
+/* --- Hero Section with Floating Effect --- */
+.hero-section {
+  padding: 120px 20px;
+  background: url('https://images.pexels.com/photos/450597/pexels-photo-450597.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center/cover;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin-bottom: 50px;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+	0% {
+		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+		transform: translatey(0px);
+	}
+	50% {
+		box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
+		transform: translatey(-20px);
+	}
+	100% {
+		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+		transform: translatey(0px);
+	}
+}
+
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* --- General Section Styling --- */
+.detector-section, .about-section {
+  padding: 60px 20px;
+  margin-bottom: 50px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+/* --- Card Styling --- */
+.upload-card, .result-card {
+  border: none;
+}
+
+.result-card img {
+  border-radius: 8px;
+}

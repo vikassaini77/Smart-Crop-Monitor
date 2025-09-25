@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detection Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>🌿 Pest Detection Result</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Detection Analysis</h2>
+        <div class="media-container">
+            <div>
+                <h3>Original File</h3>
+                {% if is_video %}
+                    <video controls width="400">
+                        <source src="{{ url_for('uploaded_file', filename=original_file) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% else %}
+                    <img src="{{ url_for('uploaded_file', filename=original_file) }}" alt="Original Image">
+                {% endif %}
+            </div>
+            <div>
+                <h3>Detection Result</h3>
+                {% if is_video %}
+                    <video controls width="400">
+                        <source src="{{ url_for('uploaded_file', filename=result_file) }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% else %}
+                    <img src="{{ url_for('uploaded_file', filename=result_file) }}" alt="Result Image">
+                {% endif %}
+            </div>
+        </div>
+        <div class="detections-list">
+            <h3>Analysis:</h3>
+            {% if detections %}
+                <ul>
+                {% for detection in detections %}
+                    <li>{{ detection }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No pests were detected.</p>
+            {% endif %}
+        </div>
+        <a href="/" class="back-button">Try Another File</a>
+    </main>
+    <footer>
+        <p>&copy; 2025 Final Year Project</p>
+    </footer>
+</body>
+</html>

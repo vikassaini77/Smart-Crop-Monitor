@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>🌿 Analytics Dashboard</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/predict">New Prediction</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout ({{ session.username }})</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Project Analytics</h2>
+        
+        {% if no_data %}
+            <p>No detection data is available yet to generate charts. Make some predictions first!</p>
+        {% else %}
+            <div id="pie-chart" class="chart-container"></div>
+            <div id="bar-chart" class="chart-container"></div>
+        {% endif %}
+    </main>
+    <footer><p>&copy; 2025 Final Year Project</p></footer>
+
+    <script>
+        var pieChartData = JSON.parse({{ pie_chart_json | safe }});
+        Plotly.newPlot('pie-chart', pieChartData.data, pieChartData.layout);
+
+        var barChartData = JSON.parse({{ bar_chart_json | safe }});
+        Plotly.newPlot('bar-chart', barChartData.data, barChartData.layout);
+    </script>
+</body>
+</html>

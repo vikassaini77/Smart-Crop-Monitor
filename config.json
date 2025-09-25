@@ -1,0 +1,17 @@
+{
+  "email": {
+    "sender_email": "your_email@gmail.com",
+    "sender_password": "your_gmail_app_password",
+    "receiver_email": "email_to_send_alerts_to@example.com"
+  },
+  "telegram": {
+    "bot_token": "YOUR_TELEGRAM_BOT_TOKEN",
+    "chat_id": "YOUR_TELEGRAM_CHAT_ID"
+  },
+  "pushbullet": {
+    "api_token": "YOUR_PUSHBULLET_API_ACCESS_TOKEN"
+  },
+  "iot_device": {
+    "led_pin": 18
+  }
+}

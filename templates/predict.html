@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Make a Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>🌿 Make a New Prediction</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/predict">Predict</a>
+            <a href="/logout">Logout ({{ session.username }})</a>
+        </nav>
+        <nav>
+    <a href="/">Home</a>
+    <a href="/predict">Predict</a>
+    <a href="/dashboard">Dashboard</a> <a href="/logout">Logout ({{ session.username }})</a>
+</nav>
+    </header>
+    <main>
+        <h2>Upload an Image to Detect Pests</h2>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <button type="submit">Detect Pests</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </main>
+    <footer><p>&copy; 2025 Final Year Project</p></footer>
+</body>
+</html>

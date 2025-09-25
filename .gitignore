@@ -1,0 +1,22 @@
+# Python virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# Node.js dependencies
+frontend/node_modules/
+frontend/build/
+
+# IDE and OS files
+.vscode/
+.DS_Store
+
+# Don't upload the trained model or data
+best.pt
+*.zip
+
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
