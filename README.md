@@ -31,3 +31,4 @@ python train.py
 Trained YOLOv8 model saved in `runs/detect/` folder.
 # Smart-Crop-Monitor
 # Smart-Crop-Monitor
+# Smart-Crop-Monitor
