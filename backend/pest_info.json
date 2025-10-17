@@ -1,0 +1,26 @@
+{
+  "Caterpillars": {
+    "description": "Caterpillars are the larval stage of moths and butterflies. They are voracious eaters and can cause significant damage to leaves, stems, and fruits.",
+    "threat_level": "High",
+    "organic_remedy": "Introduce natural predators like wasps or ladybugs. Apply Neem oil or Bacillus thuringiensis (Bt), a natural bacterium that targets caterpillars.",
+    "chemical_remedy": "Use pesticides containing Spinosad or Permethrin. Always follow the manufacturer's instructions."
+  },
+  "Ants": {
+    "description": "While not always directly harmful to plants, ants often protect and 'farm' other pests like aphids, which do cause damage. Large colonies can also disrupt root systems.",
+    "threat_level": "Low to Medium",
+    "organic_remedy": "Use diatomaceous earth around the base of plants. A solution of soapy water can be sprayed directly on them.",
+    "chemical_remedy": "Use ant baits or barrier sprays. Be cautious as these can harm beneficial insects."
+  },
+  "Wasps": {
+    "description": "Most wasps are beneficial insects in a garden, as they are natural predators of many harmful pests, including caterpillars. They are generally not a threat to crops.",
+    "threat_level": "Beneficial",
+    "organic_remedy": "No action needed. Wasps are a form of natural pest control.",
+    "chemical_remedy": "Not recommended unless the nest poses a direct threat to humans."
+  },
+  "Bees": {
+    "description": "Bees are essential pollinators and are critically important for the reproduction of many crops. They are not a threat and should be protected.",
+    "threat_level": "Beneficial (Essential)",
+    "organic_remedy": "No action needed. Encourage their presence by planting flowers.",
+    "chemical_remedy": "Avoid using broad-spectrum pesticides that can harm bee populations."
+  }
+}

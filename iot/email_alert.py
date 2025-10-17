@@ -1,10 +1,10 @@
-# in iot/email_alert.py
 import smtplib
 import json
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 import time
+import os # <-- The necessary import
 
 def send_email_alert(pest_name, image_path):
     """Sends an email with the pest detection image attached."""
@@ -47,13 +47,17 @@ def send_email_alert(pest_name, image_path):
 
 # This block allows you to test the script directly
 if __name__ == '__main__':
-    # Create a dummy image and config file for testing
-    import os
-    if not os.path.exists('test.jpg'):
-        from PIL import Image
-        Image.new('RGB', (100, 100), color = 'red').save('test.jpg')
     if not os.path.exists('config.json'):
          print("ERROR: config.json not found. Please create it first.")
     else:
-        print("Testing email alert...")
-        send_email_alert("Test Pest", "test.jpg")
+        # Create a dummy image for testing if it doesn't exist
+        if not os.path.exists('test.jpg'):
+            try:
+                from PIL import Image
+                Image.new('RGB', (100, 100), color = 'red').save('test.jpg')
+            except ImportError:
+                print("Warning: PIL/Pillow library not found. Cannot create a dummy test image.")
+
+        if os.path.exists('test.jpg'):
+            print("Testing email alert...")
+            send_email_alert("Test Pest", "test.jpg")

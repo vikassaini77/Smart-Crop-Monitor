@@ -1,0 +1,504 @@
+/* 🌐 WHY US PAGE BASE */
+.why-us-page {
+  background: linear-gradient(135deg, #34d6ec, #5c4908);
+  min-height: 100vh;
+  padding-top: 2rem;
+}
+
+/* ---------------- Challenge Section ---------------- */
+.challenge-section {
+  padding: 4rem 0;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  margin: 2rem auto;
+  max-width: 1200px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.challenge-section h1 {
+  font-weight: 800;
+  font-size: 2.75rem;
+  color: #004d40;
+  margin-bottom: 1rem;
+}
+
+.challenge-section .lead {
+  font-size: 1.25rem;
+  color: #00695c;
+  margin-bottom: 2rem;
+}
+
+.challenge-image-wrapper {
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s ease;
+}
+.challenge-image-wrapper:hover {
+  transform: scale(1.02);
+}
+.challenge-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  filter: brightness(0.95);
+  transition: all 0.4s ease;
+}
+
+/* ---------------- Benefits Section ---------------- */
+.benefits-section {
+  padding: 5rem 0;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #004d40;
+  margin-bottom: 3rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+/* Benefit Cards */
+.benefit-col {
+  margin-bottom: 2rem;
+}
+
+.benefit-card {
+  position: relative;
+  padding: 2rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  text-align: center;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+.benefit-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+/* Animated gradient overlay */
+.benefit-card::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, #00c6ff, #0072ff, #00c6ff);
+  animation: gradientMove 6s linear infinite;
+  opacity: 0.4;
+  z-index: 0;
+  border-radius: 20px;
+}
+
+@keyframes gradientMove {
+  0% { transform: rotate(0deg) translateX(0); }
+  50% { transform: rotate(180deg) translateX(20px); }
+  100% { transform: rotate(360deg) translateX(0); }
+}
+
+/* Subtle shine effect */
+.benefit-card::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
+  transform: rotate(25deg);
+  opacity: 0.2;
+  animation: shineMove 3s linear infinite;
+  z-index: 1;
+}
+
+@keyframes shineMove {
+  0% { transform: translateX(-200%) rotate(25deg); }
+  100% { transform: translateX(200%) rotate(25deg); }
+}
+
+/* Card content */
+.benefit-icon {
+  font-size: 3rem;
+  color: #00acc1;
+  margin-bottom: 1.5rem;
+  z-index: 2;
+  position: relative;
+}
+
+.benefit-card h3 {
+  color: #004d40;
+  margin-bottom: 1rem;
+  z-index: 2;
+  position: relative;
+}
+
+.benefit-card p {
+  color: #00695c;
+  line-height: 1.6;
+  z-index: 2;
+  position: relative;
+}
+
+/* Glassmorphic Button */
+.glass-btn {
+  background: rgba(142, 132, 132, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #5ddf52;
+  font-weight: bold;
+  padding: 0.75rem 2rem;
+  transition: all 0.3s ease;
+}
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+/* ---------------- Challenge Section Hero Upgrade ---------------- */
+.challenge-section {
+  position: relative;
+  padding: 4rem 0;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  margin: 2rem auto;
+  max-width: 1200px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Gradient glow overlay */
+.challenge-section::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle at center, rgba(0, 188, 212, 0.2), transparent 70%);
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Text and content always above glow */
+.challenge-section h1,
+.challenge-section p,
+.challenge-section img {
+  position: relative;
+  z-index: 2;
+}
+
+/* Floating parallax effect on the image */
+.challenge-image-wrapper {
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s ease;
+  will-change: transform;
+  perspective: 1000px;
+}
+
+.challenge-image-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  filter: brightness(0.95);
+  transform: translateY(0);
+  transition: transform 0.5s ease;
+}
+
+/* Floating animation */
+@keyframes floatImage {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.challenge-image-wrapper img {
+  animation: floatImage 6s ease-in-out infinite;
+}
+/* Challenge section */
+.challenge-section .challenge-image-wrapper {
+  max-width: 700px;
+  margin-top: 30px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.challenge-section .challenge-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.challenge-section .challenge-image-wrapper:hover .challenge-image {
+  transform: scale(1.05);
+}
+
+.image-overlay {
+  position: relative;
+}
+
+.image-overlay::before {
+  content: "";
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.15);
+  pointer-events: none;
+  border-radius: 20px;
+}
+
+/* Slide up animation */
+.slide-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp 0.8s forwards;
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Benefits section */
+.benefit-card {
+  background: #fff;
+  padding: 25px 20px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.benefit-card .benefit-icon {
+  font-size: 50px;
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.hover-zoom:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.glass-btn {
+  backdrop-filter: blur(5px);
+  background: rgba(162, 184, 167, 0.8);
+  border: none;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.glass-btn:hover {
+  background: rgba(40, 167, 69, 1);
+  transform: scale(1.05);
+}
+/* 🌐 Base */
+.why-us-page {
+  background: linear-gradient(135deg, #34d6ec, #000705);
+  min-height: 100vh;
+  padding-top: 2rem;
+}
+
+/* ---------------- Challenge Section ---------------- */
+.challenge-section {
+  position: relative;
+  padding: 4rem 0;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  margin: 2rem auto;
+  max-width: 1200px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Glow overlay */
+.challenge-section::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle at center, rgba(65, 211, 230, 0.717), transparent 70%);
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.challenge-section h1,
+.challenge-section p,
+.challenge-section img {
+  position: relative;
+  z-index: 2;
+}
+
+.challenge-image-wrapper {
+  max-width: 700px;
+  margin-top: 30px;
+  border-radius: 20px;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+.challenge-image-wrapper img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  filter: brightness(0.95);
+  animation: floatImage 6s ease-in-out infinite;
+  transition: transform 0.5s ease;
+}
+
+.challenge-image-wrapper:hover img {
+  transform: scale(1.05);
+}
+
+@keyframes floatImage {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Slide-up */
+.slide-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp 0.8s forwards;
+}
+
+@keyframes slideUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------------- Benefits Section ---------------- */
+.benefit-card {
+  position: relative;
+  padding: 2rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.25);
+  text-align: center;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+.benefit-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+.benefit-card::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100%; height: 100%;
+  background: linear-gradient(120deg, #ef1c7f44, #0072ff, #0a6a85);
+  animation: gradientMove 6s linear infinite;
+  opacity: 0.4;
+  z-index: 0;
+  border-radius: 20px;
+}
+
+@keyframes gradientMove {
+  0% { transform: rotate(0deg) translateX(0); }
+  50% { transform: rotate(180deg) translateX(20px); }
+  100% { transform: rotate(360deg) translateX(0); }
+}
+
+.benefit-card::after {
+  content: "";
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 50%; height: 200%;
+  background: linear-gradient(120deg, rgba(242, 135, 135, 0.3), rgba(255,255,255,0));
+  transform: rotate(25deg);
+  opacity: 0.2;
+  animation: shineMove 3s linear infinite;
+  z-index: 1;
+}
+
+@keyframes shineMove {
+  0% { transform: translateX(-200%) rotate(25deg); }
+  100% { transform: translateX(200%) rotate(25deg); }
+}
+
+.benefit-icon {
+  font-size: 3rem;
+  color: #00acc1;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.benefit-card h3 {
+  color: #004d40;
+  margin-bottom: 1rem;
+  position: relative; z-index:2;
+}
+
+.benefit-card p {
+  color: #00695c;
+  line-height: 1.6;
+  position: relative; z-index:2;
+}
+
+/* Glass button */
+.glass-btn {
+  background: rgba(142, 132, 132, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #0d5b75;
+  font-weight: bold;
+  padding: 0.75rem 2rem;
+  transition: all 0.3s ease;
+}
+.glass-btn:hover {
+  background: rgba(145, 76, 76, 0.35);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  transform: translateY(-2px);
+}
+
+/* CTA pulse */
+.cta-btn {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Counters */
+.counter {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #01300c;
+  margin-bottom: 5px;
+}

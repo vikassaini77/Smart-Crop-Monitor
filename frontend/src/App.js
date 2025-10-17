@@ -1,91 +1,93 @@
-// in frontend/src/App.js
-import React, { useState } from 'react';
-import axios from 'axios';
-import './App.css';
+// src/App.js
+import React, { useState, useEffect, Suspense, lazy } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import * as Tone from "tone";
+
+// Component Imports
+import NavbarComponent from "./components/navbar";
+import EntryScreen from "./components/EntryScreen";
+import GsapPreloader from "./components/GsapPreloader";
+import LivingBackground from "./components/LivingBackground";
+import Footer from "./components/Footer";
+import ScrollToTopButton from "./components/ScrollToTopButton";
+import AnimatedCursor from "./components/AnimatedCursor";
+
+// Lazy-loaded pages for performance
+const Home = lazy(() => import("./pages/Home"));
+const SmartCommandCenter = lazy(() => import("./pages/SmartCommandCenter"));
+const About = lazy(() => import("./components/about"));
+const History = lazy(() => import("./pages/History"));
+const WhyUs = lazy(() => import("./pages/WhyUs"));
+const GlobalStats = lazy(() => import("./pages/GlobalStats"));
+
+import "./styles/App.css";
 
 function App() {
-  const [file, setFile] = useState(null);
-  const [detections, setDetections] = useState(null);
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [preview, setPreview] = useState(null);
+  const [hasEntered, setHasEntered] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState("light");
 
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile));
-      setDetections(null);
-      setError('');
-    }
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!file) {
-      setError('Please select a file first.');
-      return;
-    }
-
-    setIsLoading(true);
-    const formData = new FormData();
-    formData.append('file', file);
-
+  // Initialize Tone.js audio context on entry
+  const handleEnter = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/predict/', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      setDetections(response.data.detections);
-      setError('');
+      await Tone.start();
     } catch (err) {
-      setError('An error occurred during detection. Please ensure the backend is running.');
-      console.error(err);
+      console.warn("⚠️ Tone.js failed to start, continuing without audio.", err);
     } finally {
-      setIsLoading(false);
+      setHasEntered(true);
     }
   };
+
+  const handlePreloaderLoaded = () => setLoading(false);
+
+  const toggleTheme = () => {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
+    document.documentElement.setAttribute("data-theme", theme === "dark" ? "light" : "dark");
+  };
+
+  // EntryScreen
+  if (!hasEntered) return <EntryScreen onEnter={handleEnter} />;
+
+  // GSAP preloader
+  if (loading) return <GsapPreloader onLoaded={handlePreloaderLoaded} />;
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>🐞 Pest Detection Dashboard</h1>
-        <p>Upload an image to detect pests using a YOLOv8 model.</p>
-      </header>
-      <main>
-        <form onSubmit={handleSubmit} className="upload-form">
-          <input type="file" onChange={handleFileChange} accept="image/*" />
-          <button type="submit" disabled={isLoading || !file}>
-            {isLoading ? 'Detecting...' : 'Detect Pests'}
-          </button>
-        </form>
+    <Router>
+      <div className={`App ${theme}-theme`}>
+        {/* Living animated background */}
+        <LivingBackground />
 
-        {error && <p className="error-message">{error}</p>}
+        {/* Custom animated cursor */}
+        <AnimatedCursor />
 
-        <div className="results-container">
-          {preview && (
-            <div className="image-preview">
-              <h3>Your Image:</h3>
-              <img src={preview} alt="Uploaded preview" />
-            </div>
-          )}
+        {/* Toast notifications */}
+        <ToastContainer theme={theme} position="top-right" autoClose={3000} hideProgressBar />
 
-          {detections && (
-            <div className="results">
-              <h2>Detection Results:</h2>
-              {detections.length > 0 ? (
-                <ul>
-                  {detections.map((pest, index) => (
-                    <li key={index}>{pest}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No pests were detected in the image.</p>
-              )}
-            </div>
-          )}
+        {/* Navbar with theme toggle */}
+        <NavbarComponent theme={theme} toggleTheme={toggleTheme} />
+
+        <div className="page-container">
+          <Suspense fallback={<div className="loading-fallback">Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/why-us" element={<WhyUs />} />
+              <Route path="/dashboard" element={<SmartCommandCenter />} />
+              <Route path="/history" element={<History />} />
+              <Route path="/stats" element={<GlobalStats />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </Suspense>
         </div>
-      </main>
-    </div>
+
+        {/* Footer */}
+        <Footer />
+
+        {/* Scroll to top button */}
+        <ScrollToTopButton />
+      </div>
+    </Router>
   );
 }
 

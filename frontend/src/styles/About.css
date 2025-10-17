@@ -1,0 +1,66 @@
+.about-page-container {
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to bottom, #e0f7fa, #c8e6c9);
+}
+
+/* Glassmorphic Sections */
+.glass-box {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+/* Titles */
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* Tech Cards */
+.tech-card {
+  cursor: pointer;
+}
+.tech-name {
+  font-size: 1.2rem;
+}
+.tech-category {
+  font-size: 0.9rem;
+}
+
+/* Workflow Cards */
+.workflow-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.step-number {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--accent-color, #ff6f00);
+}
+
+/* Developer Links */
+.developer-links .btn {
+  border-radius: 0.8rem;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+.developer-links .btn:hover {
+  background: rgba(255,255,255,0.2);
+  color: #000;
+}

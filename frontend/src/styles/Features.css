@@ -1,0 +1,35 @@
+.features-section {
+  padding: 4rem 0;
+  background-color: var(--background-primary);
+  transition: background-color 0.3s;
+}
+
+.features-title {
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+.feature-card {
+  background-color: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s;
+  height: 100%; /* Ensures cards in the same row are the same height */
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card h3 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.feature-card p {
+  color: var(--text-secondary);
+}

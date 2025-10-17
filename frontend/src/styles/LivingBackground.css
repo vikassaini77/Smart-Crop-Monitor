@@ -1,0 +1,69 @@
+/* --- Main Background Container --- */
+.living-background {
+  position: fixed; /* Stays in the background */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Sits behind all other content */
+  overflow: hidden;
+  /* The initial "Morning" gradient is set by GSAP in the JS file */
+  /* This is just a fallback */
+  background: linear-gradient(to bottom, #63e0ba, #56ab2f); 
+}
+
+/* --- Layer Containers --- */
+/* These hold the different animated elements for each scene */
+.clouds, .data-rain, .iot-nodes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* All layers start hidden and are faded in by GSAP */
+}
+
+/* --- Scene 1: Morning Clouds --- */
+.cloud {
+  position: absolute;
+  background: rgba(249, 145, 145, 0.6);
+  border-radius: 50%;
+  width: 200px;
+  height: 60px;
+  filter: blur(10px);
+  animation: drift 60s infinite linear;
+}
+
+.cloud.x1 { left: -200px; top: 50px; transform: scale(0.6); }
+.cloud.x2 { left: 150px; top: 150px; transform: scale(0.8); animation-duration: 40s; }
+.cloud.x3 { left: 500px; top: 80px; transform: scale(0.5); animation-duration: 50s; }
+
+@keyframes drift {
+  from { transform: translateX(-250px); }
+  to { transform: translateX(100vw); }
+}
+
+/* --- Scene 2: Data Rain Particles --- */
+.data-particle {
+  position: absolute;
+  top: -20px; /* Start above the screen */
+  width: 2px;
+  height: 20px;
+  /* The glowing green gradient for data rain */
+  background: linear-gradient(to bottom, rgba(0, 255, 136, 0), rgba(0, 255, 136, 0.8));
+  filter: drop-shadow(0 0 5px #00ff88);
+  /* The falling animation is now controlled by GSAP for better performance */
+}
+
+/* --- Scene 3: IoT Nodes --- */
+.iot-node {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #00ff88;
+  border-radius: 50%;
+  /* The pulsing glow effect */
+  box-shadow: 0 0 15px #00ff88, 0 0 30px #00ff88;
+  /* The blinking/pulsing animation is controlled by GSAP */
+}
+

@@ -1,0 +1,43 @@
+.how-it-works-section {
+  padding: 4rem 0;
+  background-color: var(--background-secondary); /* A slightly different background */
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.3s;
+}
+
+.section-title {
+  color: var(--text-primary);
+  margin-bottom: 3rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.step-col {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.step-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  width: 100%;
+}
+
+.step-icon {
+  color: var(--accent-color); /* Use the theme's accent color for the icon */
+  margin-bottom: 1.5rem;
+}
+
+.step-title {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.step-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+

@@ -1,0 +1,23 @@
+.scroll-button {
+  position: fixed; /* Keep it in the same place on the screen */
+  bottom: 30px;
+  right: 30px;
+  background-color: var(--accent-color); /* Use our theme's accent color */
+  color: white;
+  border: none;
+  border-radius: 50%; /* Make it a perfect circle */
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure it's on top of other content */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+  /* Smooth fade-in/out animation */
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.scroll-button:hover {
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
+}

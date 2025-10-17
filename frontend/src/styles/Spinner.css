@@ -1,0 +1,31 @@
+.spinner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top of other content */
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 8px solid #f3f3f3; /* Light grey circle */
+  border-top: 8px solid var(--accent-color); /* Themed color for the spinning part */
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite; /* The spin animation */
+}
+
+/* Defines the keyframes for the spinning animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

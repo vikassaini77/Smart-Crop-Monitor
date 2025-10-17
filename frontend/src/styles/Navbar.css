@@ -1,0 +1,121 @@
+/* ---------------- Glassmorphic Navbar with Animated Gradient Glow ---------------- */
+.navbar {
+  position: fixed; /* Ensure it’s on top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(15px);
+  background: rgba(255, 70, 70, 0.96);
+  border-radius: 15px;
+  padding: 0.5rem 1.5rem; /* Reduced padding to avoid pushing down */
+  box-shadow: 0 8px 25px rgba(131, 205, 34, 0.508);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  background-clip: padding-box, border-box;
+  border-image: linear-gradient(120deg, #00bcd4, #ff4081, #918836, #12cee7) 1;
+  animation: borderGlow 4s linear infinite;
+}
+
+/* Compensate for fixed navbar so page content doesn't go under it */
+body {
+  padding-top: 70px; /* Adjust according to navbar height */
+}
+
+
+/* Gradient animation */
+@keyframes borderGlow {
+  0% {
+    border-image-source: linear-gradient(120deg, #00bcd4, #ff4081, #ffeb3b, #00bcd4);
+  }
+  50% {
+    border-image-source: linear-gradient(300deg, #00bcd4, #ff4081, #ffeb3b, #00bcd4);
+  }
+  100% {
+    border-image-source: linear-gradient(120deg, #00bcd4, #ff4081, #ffeb3b, #00bcd4);
+  }
+}
+
+/* Navbar brand styling */
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--accent-color, #00bcd4);
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+
+/* Nav links */
+.nav-link {
+  margin: 0 0.7rem;
+  color: rgba(255, 235, 11, 0.85);
+  font-weight: 500;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: var(--accent-color, #00bcd4);
+  left: 0;
+  bottom: -5px;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #525207;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Theme toggle button */
+.theme-toggle-button {
+  margin-left: 1rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: #e56cd7;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+/* Navbar collapse animation (for mobile) */
+.navbar-collapse {
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+/* Dark mode support */
+body.dark .navbar {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+body.dark .nav-link {
+  color: rgba(202, 233, 93, 0.803);
+}
+
+body.dark .theme-toggle-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e84646;
+}

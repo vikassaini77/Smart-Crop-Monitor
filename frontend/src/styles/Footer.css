@@ -1,0 +1,46 @@
+.site-footer {
+  background-color: var(--background-secondary);
+  color: var(--text-secondary);
+  padding: 3rem 0;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.footer-col h5 {
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.footer-col p {
+  line-height: 1.7;
+}
+
+.footer-links {
+  list-style: none;
+  padding-left: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: var(--accent-color);
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+  font-size: 0.85rem;
+}
+

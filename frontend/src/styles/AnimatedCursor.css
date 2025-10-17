@@ -1,0 +1,46 @@
+/* Hides the default browser cursor */
+body {
+  cursor: none;
+}
+
+.cursor, .cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none; /* Allows clicks to pass through */
+  border-radius: 50%;
+  z-index: 1100;
+}
+
+.cursor {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-color, #2c962d);
+}
+
+.cursor-follower {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(44, 150, 45, 0.2);
+  border: 1px solid rgba(44, 150, 45, 0.4);
+  transition: transform 0.3s ease-out;
+}
+
+/* Hide custom cursor on small screens */
+@media (max-width: 768px) {
+  .cursor, .cursor-follower {
+    display: none;
+  }
+  body {
+    cursor: auto; /* Restore default cursor on mobile */
+  }
+}
+
+/* Magnetic button hover effect */
+.magnetic-button {
+  transition: transform 0.2s ease-out;
+  display: inline-block;
+}
+.magnetic-button:hover {
+  cursor: pointer;
+}

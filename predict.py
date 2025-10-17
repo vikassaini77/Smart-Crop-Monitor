@@ -8,7 +8,9 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 # Import the alert function you want to use.
 # Just uncomment the one you want and make sure the others are commented out.
 
-from iot.iot_dummy import trigger_alert
+# --- 1. CHOOSE YOUR ALERT TYPE ---
+# from iot.iot_dummy import trigger_alert
+from iot.email_alert import send_email_alert as trigger_alert
 # from iot.email_alert import send_email_alert as trigger_alert
 # from iot.telegram_alert import send_telegram_alert as trigger_alert # Note: This is an async function
 # from iot.pushbullet_alert import send_pushbullet_alert as trigger_alert
@@ -67,7 +69,7 @@ def run_pest_detection():
         for pest in pests_detected:
             # For Telegram (which is async), you would need to run it differently
             # Example: asyncio.run(trigger_alert(pest, result_image_path))
-            trigger_alert(pest) # For dummy and device alerts
+            trigger_alert(pest, result_image_path) # For dummy and device alerts
             # trigger_alert(pest, result_image_path) # For email, telegram, pushbullet
     else:
         print("No pests detected.")
