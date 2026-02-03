@@ -1,13 +1,10 @@
 import cv2
 from ultralytics import YOLO
 import time
-from iot.email_alert import send_email_alert # <-- 1. IMPORT the email function
-
-# --- SETUP ---
+from iot.email_alert import send_email_alert 
 model = YOLO('best.pt')
-cap = cv2.VideoCapture(0) # Use 0 for webcam
+cap = cv2.VideoCapture(0) 
 
-# A cooldown to prevent sending an email for every single frame
 last_alert_time = 0
 alert_cooldown_seconds = 10 # Send an alert at most once every 10 seconds
 

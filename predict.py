@@ -4,25 +4,15 @@ import os
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-# --- 1. CHOOSE YOUR ALERT TYPE ---
-# Import the alert function you want to use.
-# Just uncomment the one you want and make sure the others are commented out.
 
-# --- 1. CHOOSE YOUR ALERT TYPE ---
-# from iot.iot_dummy import trigger_alert
 from iot.email_alert import send_email_alert as trigger_alert
-# from iot.email_alert import send_email_alert as trigger_alert
-# from iot.telegram_alert import send_telegram_alert as trigger_alert # Note: This is an async function
-# from iot.pushbullet_alert import send_pushbullet_alert as trigger_alert
-# from iot.iot_device import trigger_device_alert
 
 
-# --- 2. DEFINE PATHS ---
-# Path to your trained model weights
+
 model_path = r"runs\detect\pest_detector14\weights\best.pt"
 
-# The image, video, or folder you want to test
-source = "test.jpg" # Make sure test.jpg is in your folder
+
+source = "test.jpg" 
 
 
 # --- 3. LOAD THE MODEL AND RUN PREDICTION ---
@@ -61,14 +51,12 @@ def run_pest_detection():
     # If any pests were found, trigger alerts
     if pests_detected:
         print(f"Pests found: {', '.join(pests_detected)}")
-        # The result image is saved by the predict function
-        # The latest result path can be found in results[0].save_dir
+        
         result_image_path = os.path.join(results[0].save_dir, os.path.basename(source))
 
         # Trigger one alert for each unique pest type found
         for pest in pests_detected:
-            # For Telegram (which is async), you would need to run it differently
-            # Example: asyncio.run(trigger_alert(pest, result_image_path))
+            
             trigger_alert(pest, result_image_path) # For dummy and device alerts
             # trigger_alert(pest, result_image_path) # For email, telegram, pushbullet
     else:
