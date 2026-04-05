@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core — deep forest base */
+    --background: 132 30% 5%;
+    --foreground: 80 20% 88%;
+
+    --card: 134 22% 10%;
+    --card-foreground: 80 20% 88%;
+
+    --popover: 134 22% 10%;
+    --popover-foreground: 80 20% 88%;
+
+    /* Primary — sunlight yellow (#FFD54F → hsl 45 100% 65%) */
+    --primary: 45 100% 65%;
+    --primary-foreground: 132 30% 5%;
+
+    --secondary: 134 18% 15%;
+    --secondary-foreground: 80 15% 80%;
+
+    --muted: 134 12% 13%;
+    --muted-foreground: 130 8% 50%;
+
+    /* Accent — bright green (#66BB6A → hsl 122 38% 57%) */
+    --accent: 122 38% 57%;
+    --accent-foreground: 132 30% 5%;
+
+    --destructive: 0 65% 48%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Warning — amber for non-critical alerts */
+    --warning: 35 90% 55%;
+    --warning-foreground: 35 20% 10%;
+
+    --border: 134 14% 18%;
+    --input: 134 14% 18%;
+    --ring: 45 100% 65%;
+
+    --radius: 0.75rem;
+
+    /* Farming tokens */
+    --earth: 16 28% 26%;
+    --earth-foreground: 25 18% 78%;
+    --leaf: 128 55% 22%;
+    --leaf-foreground: 120 12% 88%;
+    --leaf-bright: 122 38% 57%;
+    --wheat: 45 100% 65%;
+    --wheat-foreground: 45 20% 10%;
+    --soil: 16 20% 16%;
+    --soil-foreground: 16 12% 70%;
+    --glow-green: 122 55% 42%;
+    --glow-gold: 45 95% 62%;
+
+    /* Glass */
+    --glass-bg: 134 18% 10% / 0.65;
+    --glass-border: 134 15% 22% / 0.35;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(145deg, hsl(132 30% 4%), hsl(134 25% 9%), hsl(128 22% 7%));
+    --gradient-card: linear-gradient(145deg, hsl(134 18% 12% / 0.8), hsl(134 18% 8% / 0.4));
+    --gradient-accent: linear-gradient(135deg, hsl(45 100% 65%), hsl(122 38% 50%));
+
+    /* Shadows */
+    --shadow-glow: 0 0 30px hsl(122 55% 42% / 0.12);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.35);
+
+    /* Sidebar */
+    --sidebar-background: 134 22% 8%;
+    --sidebar-foreground: 80 15% 80%;
+    --sidebar-primary: 45 100% 65%;
+    --sidebar-primary-foreground: 132 30% 5%;
+    --sidebar-accent: 134 18% 15%;
+    --sidebar-accent-foreground: 80 15% 80%;
+    --sidebar-border: 134 14% 18%;
+    --sidebar-ring: 45 100% 65%;
+
+    /* Chart palette */
+    --chart-1: 122 38% 57%;
+    --chart-2: 45 100% 65%;
+    --chart-3: 0 65% 48%;
+    --chart-4: 16 28% 45%;
+    --chart-5: 200 50% 50%;
+
+    --font-display: 'DM Serif Display', serif;
+    --font-body: 'Inter', sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: var(--shadow-card);
+  }
+
+  .glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  .text-gradient {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(122 55% 42% / 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px hsl(122 55% 42% / 0.22);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}

@@ -1,0 +1,167 @@
+ M "Pest detection/train/labels.cache"
+ M "Pest detection/valid/labels.cache"
+ M README.md
+ M app.py
+ M backend/main.py
+ M configs/pest.yaml
+ M detected_pest.jpg
+ D frontend/package-lock.json
+ D frontend/package.json
+ D frontend/public/index.html
+ D frontend/src/App.js
+ D frontend/src/App.test.js
+ D frontend/src/components/AIPestDetectorComponent.js
+ D frontend/src/components/AboutSummary.js
+ D frontend/src/components/AiInsightsWidget.jsx
+ D frontend/src/components/AnimatedCursor.js
+ D frontend/src/components/BackgroundAnimation.js
+ D frontend/src/components/CinematicPreloader.js
+ D frontend/src/components/Detector.js
+ D frontend/src/components/EntryScreen.js
+ D frontend/src/components/FadeInOnScroll.js
+ D frontend/src/components/Features.js
+ D frontend/src/components/Footer.js
+ D frontend/src/components/GsapPreloader.js
+ D frontend/src/components/Hero.js
+ D frontend/src/components/HowItWorks.js
+ D frontend/src/components/IotMonitoring.js
+ D frontend/src/components/LiveChart.js
+ D frontend/src/components/LivingBackground.js
+ D frontend/src/components/LoadingSpinner.js
+ D frontend/src/components/PestInfoModal.js
+ D frontend/src/components/Preloader.js
+ D frontend/src/components/ScrollToTopButton.js
+ D frontend/src/components/TechStack.js
+ D frontend/src/components/VirtualFarm.js
+ D frontend/src/components/WaterManagementWidget.jsx
+ D frontend/src/components/WeatherWidget.js
+ D frontend/src/components/about.js
+ D frontend/src/components/navbar.js
+ D frontend/src/index.css
+ D frontend/src/index.js
+ D frontend/src/logo.svg
+ D frontend/src/pages/Dashboard.js
+ D frontend/src/pages/FuturisticDashboard.js
+ D frontend/src/pages/GlobalStats.js
+ D frontend/src/pages/History.js
+ D frontend/src/pages/Home.js
+ D frontend/src/pages/SmartCommandCenter.js
+ D frontend/src/pages/SmartDashboard.ols.js
+ D frontend/src/pages/WhyUs.js
+ D frontend/src/reportWebVitals.js
+ D frontend/src/services/weatherService.js
+ D frontend/src/setupTests.js
+ D frontend/src/styles/About.css
+ D frontend/src/styles/AboutPage.css
+ D frontend/src/styles/AboutSummary.css
+ D frontend/src/styles/AnimatedCursor.css
+ D frontend/src/styles/Animations.css
+ D frontend/src/styles/App.css
+ D frontend/src/styles/CinematicPreloader.css
+ D frontend/src/styles/Dashboard.css
+ D frontend/src/styles/EntryScreen.css
+ D frontend/src/styles/Features.css
+ D frontend/src/styles/Footer.css
+ D frontend/src/styles/FuturisticDashboard.css
+ D frontend/src/styles/GlobalStats.css
+ D frontend/src/styles/GsapPreloader.css
+ D frontend/src/styles/Hero.css
+ D frontend/src/styles/History.css
+ D frontend/src/styles/HistoryDashboard.css
+ D frontend/src/styles/Home.css
+ D frontend/src/styles/HowItWorks.css
+ D frontend/src/styles/IotMonitoring.css
+ D frontend/src/styles/LivingBackground.css
+ D frontend/src/styles/Navbar.css
+ D frontend/src/styles/PestInfoModal.css
+ D frontend/src/styles/Preloader.css
+ D frontend/src/styles/ScrollToTopButton.css
+ D frontend/src/styles/SmartCommandCenter.css
+ D frontend/src/styles/SmartDashboard.css
+ D frontend/src/styles/Spinner.css
+ D frontend/src/styles/TechStack.css
+ D frontend/src/styles/VirtualFarm.css
+ D frontend/src/styles/WaterManagementWidget.css
+ D frontend/src/styles/WeatherWidget.css
+ D frontend/src/styles/WhyUs.css
+ D old_frontend/.gitignore
+ D old_frontend/README.md
+ D old_frontend/package-lock.json
+ D old_frontend/package.json
+ D old_frontend/public/favicon.ico
+ D old_frontend/public/index.html
+ D old_frontend/public/logo192.png
+ D old_frontend/public/logo512.png
+ D old_frontend/public/manifest.json
+ D old_frontend/public/robots.txt
+ D old_frontend/src/App.css
+ D old_frontend/src/App.js
+ D old_frontend/src/App.test.js
+ D old_frontend/src/Dashboard.css
+ D old_frontend/src/History.js
+ D old_frontend/src/dashboard.js
+ D old_frontend/src/index.css
+ D old_frontend/src/index.js
+ D old_frontend/src/logo.svg
+ D old_frontend/src/reportWebVitals.js
+ D old_frontend/src/setupTests.js
+ D real_time_detector.py
+ M requirements.txt
+ M train.py
+?? api_logs.txt
+?? arduino_sketch/
+?? backend/Dockerfile
+?? backend/ai_insights.py
+?? backend/arduino.py
+?? backend/celery_app.py
+?? backend/database.py
+?? backend/db_logger.py
+?? backend/email_alert.py
+?? backend/messenger.py
+?? backend/models_db.py
+?? backend/real_time_detector.py
+?? backend/requirements_prod.txt
+?? backend/static/001da2af-cc42-4f6b-ab98-8d2cf4d92bb7_upload.jpg
+?? backend/static/038a495c-5a90-43f3-82bd-27e84eefea23_upload.jpg
+?? backend/static/0613f6bf-7382-4659-863b-4511e0bf8eba_upload.jpg
+?? backend/static/172665d7-211b-4971-a6e5-1bdb999601a3_upload.jpg
+?? backend/static/1cc9bc84-7b80-4c93-b901-90b69d62b56d_test.jpg
+?? backend/static/1dee6c1c-edf2-4bdf-be86-22a74c01cdd8_upload.jpg
+?? backend/static/246f3715-42b9-4b60-a620-1dabc1a159f1_upload.jpg
+?? backend/static/3112f632-a252-4340-8249-d07ac8d8ca9c_upload.jpg
+?? backend/static/403e035b-b0ed-466a-9741-f8453f01e359_upload.jpg
+?? backend/static/4270711a-d607-49bf-9ace-90e35817406d_upload.jpg
+?? backend/static/48a2e658-a164-4f8c-8ce8-49c497a6c5b7_test.jpg
+?? backend/static/54f239c2-1a7d-45f2-b388-3562612be1a4_upload.jpg
+?? backend/static/9f3952c9-101c-49da-9e38-c22804a14aeb_upload.jpg
+?? backend/static/bda88bf9-630f-4793-aca4-d94ac1c94cb5_upload.jpg
+?? backend/static/c93c931b-a3e2-4290-927c-e1e323d752e5_upload.jpg
+?? backend/static/d7822f47-32c3-438c-9be1-77bb029eafa6_upload.jpg
+?? backend/static/df9ae7d7-99c7-4ec2-96f0-bf8bb068ec8f_upload.jpg
+?? backend/static/ec7cc485-5fae-4a80-9864-bca250afb6cd_upload.jpg
+?? backend/static/jobs/
+?? backend/static/result_1cc9bc84-7b80-4c93-b901-90b69d62b56d_test.jpg
+?? backend/static/result_246f3715-42b9-4b60-a620-1dabc1a159f1_upload.jpg
+?? backend/static/result_48a2e658-a164-4f8c-8ce8-49c497a6c5b7_test.jpg
+?? backend/static/result_ec7cc485-5fae-4a80-9864-bca250afb6cd_upload.jpg
+?? backend/worker.py
+?? dataset_guide.md
+?? docker-compose.yml
+?? false_positives/
+?? field-guardian-ai-main/
+?? log.txt
+?? models.txt
+?? run_all.bat
+?? runs/detect/pest_detector_v2/
+?? runs/detect/pest_detector_v22/
+?? runs/detect/pest_detector_v23/
+?? runs/detect/pest_detector_v24/
+?? runs/detect/pest_detector_v25/
+?? runs/detect/pest_detector_v26/
+?? runs/detect/pest_detector_v27/
+?? status.txt
+?? temp_live_frame.jpg
+?? train.log
+?? train_error.log
+?? video_output.txt
+?? worker_logs.txt

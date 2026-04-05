@@ -1,6 +1,6 @@
-train: C:\Users\hp\Downloads\pest-detection-starter\pest-detection-starter\Pest detection -YOLOv8-.v3i.yolov8\train
-val: C:\Users\hp\Downloads\pest-detection-starter\pest-detection-starter\Pest detection -YOLOv8-.v3i.yolov8\valid
-test: C:\Users\hp\Downloads\pest-detection-starter\pest-detection-starter\Pest detection -YOLOv8-.v3i.yolov8\test
+train: c:\Users\hp\Desktop\pest-detection-starter\Pest detection\train
+val: c:\Users\hp\Desktop\pest-detection-starter\Pest detection\valid
+test: c:\Users\hp\Desktop\pest-detection-starter\Pest detection\test
 
 # Make sure your nc and names are correct
 nc: 12

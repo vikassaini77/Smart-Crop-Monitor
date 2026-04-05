@@ -14,7 +14,7 @@ plotly
 # Web Application (Backend)
 Flask
 Flask-SQLAlchemy
-fastapi[all] # Includes FastAPI and Uvicorn
+fastapi>=0.110.0 # Pin to ensure Pydantic v2 compatibility
 
 # IoT and Alerting
 pyserial

@@ -1,5 +1,0 @@
-/* This ensures that elements are hidden before they animate in,
-   preventing a "flash" of content on page load. */
-.fade-in-section {
-  opacity: 0;
-}
