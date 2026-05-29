@@ -53,6 +53,7 @@ config.json
 
 # --- Models and Datasets ---
 *.pt
+!best.pt
 *.onnx
 *.zip
 *.tar.gz
