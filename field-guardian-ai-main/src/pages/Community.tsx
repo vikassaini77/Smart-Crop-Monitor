@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import OrganicBackground from "@/components/OrganicBackground";
 
 interface Story {
   id: string;
@@ -182,9 +183,11 @@ const Community = () => {
   const filtered = filter === "all" ? stories : stories.filter((s) => s.story_type === filter);
 
   return (
-    <div className="min-h-screen pt-20 pb-12 px-4">
-      <div className="container mx-auto max-w-4xl">
-        {/* Header */}
+    <div className="relative min-h-screen">
+      <OrganicBackground />
+      <div className="relative z-10 pt-20 pb-12 px-4">
+        <div className="container mx-auto max-w-4xl">
+          {/* Header */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
           <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-4">
             <Leaf className="w-8 h-8 text-primary" />
@@ -207,7 +210,7 @@ const Community = () => {
               {showTopStories && (
                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="grid gap-3 md:grid-cols-3 overflow-hidden">
                   {topStories.map((story, i) => (
-                    <motion.div key={story.id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1 }} className="glass-card rounded-2xl p-4 border border-sunlight/20 relative overflow-hidden">
+                    <motion.div key={story.id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1 }} className="glass-card rounded-2xl p-4 border border-sunlight/20 bg-background/20 backdrop-blur-xl relative overflow-hidden">
                       <div className="absolute top-2 right-2 bg-sunlight/20 text-sunlight text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
                         <Trophy className="w-3 h-3" /> #{i + 1}
                       </div>
@@ -304,7 +307,7 @@ const Community = () => {
             const isExpanded = expandedComments.has(story.id);
 
             return (
-              <motion.div key={story.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="glass-card rounded-2xl p-5">
+              <motion.div key={story.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="glass-card bg-background/20 backdrop-blur-xl border-white/10 rounded-2xl p-5">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
@@ -380,6 +383,7 @@ const Community = () => {
           })}
         </div>
       </div>
+    </div>
     </div>
   );
 };

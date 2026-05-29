@@ -1,9 +1,9 @@
 import requests
 
-SUPABASE_URL = "https://ritomcgxztfqxwzjcdwj.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpdG9tY2d4enRmcXh3empjZHdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0MTkyNTcsImV4cCI6MjA4OTk5NTI1N30.HmwaupsceieXy2w-P5rfO-WFcSgeK1GtYIZ67NNhZfQ"
+SUPABASE_URL = "https://aqrjjknovlqvypsrwqca.supabase.co"
+SUPABASE_KEY = "sb_publishable_ZzwaTExDXIcw0c5WBmvJFQ_T6ztwGNr"
 
-def log_detection(pest_name, confidence, severity, action):
+def log_detection(pest_name, confidence, severity, action, image_url=None):
     try:
         url = f"{SUPABASE_URL}/rest/v1/detections"
         headers = {
@@ -19,10 +19,14 @@ def log_detection(pest_name, confidence, severity, action):
             "severity": severity,
             "suggested_action": action
         }
-        requests.post(url, headers=headers, json=payload, timeout=2)
-        print(f"[DB] ☁️ Updated Supabase 'detections' table -> {pest_name}")
+        if image_url:
+            payload["image_url"] = image_url
+
+        response = requests.post(url, headers=headers, json=payload, timeout=2)
+        response.raise_for_status() # Raise exception if HTTP error
+        print(f"[DB] Updated Supabase 'detections' table -> {pest_name}")
     except Exception as e:
-        print(f"[DB] ❌ Failed to log detection to Supabase: {e}")
+        print(f"[DB] Failed to log detection to Supabase: {e}")
 
 def log_alert(title, message, severity):
     try:
@@ -38,7 +42,8 @@ def log_alert(title, message, severity):
             "message": message,
             "severity": severity
         }
-        requests.post(url, headers=headers, json=payload, timeout=2)
-        print(f"[DB] ☁️ Updated Supabase 'alerts' table -> {title}")
+        response = requests.post(url, headers=headers, json=payload, timeout=2)
+        response.raise_for_status() # Raise exception if HTTP error
+        print(f"[DB] Updated Supabase 'alerts' table -> {title}")
     except Exception as e:
-        print(f"[DB] ❌ Failed to log alert to Supabase: {e}")
+        print(f"[DB] Failed to log alert to Supabase: {e}")

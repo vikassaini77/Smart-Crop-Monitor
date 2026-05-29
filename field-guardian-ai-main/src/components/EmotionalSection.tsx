@@ -16,13 +16,13 @@ const EmotionalSection = () => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1 }}
         >
-          <p className="font-display text-3xl md:text-5xl leading-snug max-w-3xl mx-auto text-foreground/90">
-            "Farming is not just work.
+          <p className="font-display text-3xl md:text-5xl leading-snug max-w-3xl mx-auto text-foreground/90 tracking-tight">
+            "Farming isn't just an occupation.
             <br />
-            <span className="text-gradient">It's life.</span>"
+            <span className="text-gradient">It's a legacy written in the soil.</span>"
           </p>
-          <p className="text-muted-foreground mt-6 text-lg font-light">
-            Every crop tells a story. We're here to help you write a better one.
+          <p className="text-muted-foreground mt-6 text-lg font-light tracking-wide">
+            You protect what grows. We protect what you can't see.
           </p>
         </motion.div>
 

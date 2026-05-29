@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const scenes = [
   {
     id: "dawn",
-    text: "Every day begins with hope...",
+    text: "You rise before the sun, tending to the legacy of generations...",
     gradient: "radial-gradient(ellipse at 50% 80%, hsl(30 55% 20%) 0%, hsl(25 40% 12%) 30%, hsl(220 25% 6%) 70%, hsl(240 20% 4%) 100%)",
     particleHue: 35,
     tint: "transparent",
@@ -13,7 +13,7 @@ const scenes = [
   },
   {
     id: "field",
-    text: "Every step carries responsibility...",
+    text: "Your hands work the soil, but the earth and sky can be unforgiving...",
     gradient: "radial-gradient(ellipse at 40% 65%, hsl(45 45% 22%) 0%, hsl(35 30% 14%) 30%, hsl(120 18% 10%) 60%, hsl(140 20% 6%) 100%)",
     particleHue: 45,
     tint: "transparent",
@@ -21,7 +21,7 @@ const scenes = [
   },
   {
     id: "threat",
-    text: "But unseen threats grow silently...",
+    text: "Unseen threats take hold in the silence of your fields...",
     gradient: "radial-gradient(ellipse at 55% 55%, hsl(80 12% 14%) 0%, hsl(120 10% 8%) 40%, hsl(160 8% 5%) 70%, hsl(0 10% 4%) 100%)",
     particleHue: 70,
     tint: "hsla(0, 40%, 15%, 0.1)",
@@ -29,7 +29,7 @@ const scenes = [
   },
   {
     id: "hope",
-    text: "What if you could see the unseen?",
+    text: "What if you could see the invisible?",
     gradient: "radial-gradient(ellipse at 50% 60%, hsl(120 30% 16%) 0%, hsl(110 25% 12%) 40%, hsl(130 20% 8%) 70%, hsl(140 18% 5%) 100%)",
     particleHue: 120,
     tint: "hsla(120, 50%, 30%, 0.06)",

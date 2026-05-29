@@ -4,6 +4,9 @@ import { CloudSun, Droplets, Wind, Thermometer, Eye, CloudRain, Loader2, MapPin,
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import WeatherBackground from "@/components/WeatherBackground";
+import { API_BASE_URL, API_KEY } from "@/lib/api";
+
 
 interface WeatherData {
   location_name: string;
@@ -37,14 +40,18 @@ interface WeatherData {
 const Weather = () => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [simulatedCondition, setSimulatedCondition] = useState<string | null>(null);
 
   const fetchWeather = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("weather", {
-        body: { lat: 30.9, lon: 75.85, location: "Punjab, India" },
+      const res = await fetch(`${API_BASE_URL}/api/weather`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-API-Key": API_KEY },
+        body: JSON.stringify({ lat: 30.9, lon: 75.85, location: "Punjab, India" }),
       });
-      if (error) throw error;
+      if (!res.ok) throw new Error("Backend weather endpoint failed");
+      const data = await res.json();
       setWeather(data);
     } catch (err: any) {
       toast.error("Failed to fetch weather data");
@@ -96,10 +103,14 @@ const Weather = () => {
     info: CloudSun,
   };
 
+  const activeCondition = simulatedCondition || weather.current.description;
+
   return (
-    <main className="pt-20 pb-12 min-h-screen">
-      <div className="container mx-auto px-4">
-        <motion.div className="mb-8 flex items-start justify-between" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+    <div className="relative min-h-screen">
+      <WeatherBackground condition={activeCondition} />
+      <main className="pt-20 pb-12 relative z-10">
+        <div className="container mx-auto px-4">
+          <motion.div className="mb-8 flex flex-col md:flex-row md:items-start justify-between gap-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div>
             <h1 className="font-display text-3xl md:text-4xl mb-2">
               Weather <span className="text-gradient">Intelligence</span>
@@ -109,23 +120,34 @@ const Weather = () => {
               {weather.location_name} — Live weather data with farming alerts
             </p>
           </div>
-          <Button variant="outline" size="icon" className="border-border mt-2" onClick={fetchWeather}>
-            <RefreshCw className="w-4 h-4" />
-          </Button>
+          
+          <div className="flex items-center gap-1 bg-secondary/50 p-1.5 rounded-xl border border-white/10 backdrop-blur-md">
+            <span className="text-xs text-muted-foreground px-2 font-medium">SIMULATE:</span>
+            <Button variant={activeCondition === "clear sky" ? "default" : "ghost"} size="sm" className="h-8 w-8 p-0" onClick={() => setSimulatedCondition("clear sky")}>☀️</Button>
+            <Button variant={activeCondition === "overcast clouds" ? "default" : "ghost"} size="sm" className="h-8 w-8 p-0" onClick={() => setSimulatedCondition("overcast clouds")}>☁️</Button>
+            <Button variant={activeCondition === "heavy rain" ? "default" : "ghost"} size="sm" className="h-8 w-8 p-0" onClick={() => setSimulatedCondition("heavy rain")}>🌧️</Button>
+            <Button variant={activeCondition === "clear night" ? "default" : "ghost"} size="sm" className="h-8 w-8 p-0" onClick={() => setSimulatedCondition("clear night")}>🌙</Button>
+            <div className="w-px h-4 bg-border mx-2" />
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground" onClick={() => { setSimulatedCondition(null); fetchWeather(); }}>
+              <RefreshCw className="w-4 h-4" />
+            </Button>
+          </div>
         </motion.div>
 
         {/* Current Weather */}
         <motion.div
-          className="glass-card rounded-2xl p-8 mb-8"
+          className="glass-card rounded-2xl p-8 mb-8 bg-background/20 backdrop-blur-xl border-white/10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="text-center md:text-left">
-              <span className="text-6xl">{weather.current.icon}</span>
+              <span className="text-6xl">
+                {activeCondition.includes("rain") ? "🌧️" : activeCondition.includes("cloud") ? "☁️" : activeCondition.includes("night") ? "🌙" : "☀️"}
+              </span>
               <p className="font-display text-5xl mt-2 text-foreground">{weather.current.temp}°C</p>
-              <p className="text-muted-foreground mt-1 capitalize">{weather.current.description}</p>
+              <p className="text-muted-foreground mt-1 capitalize">{activeCondition}</p>
               {weather.current.feels_like !== undefined && (
                 <p className="text-xs text-muted-foreground mt-1">Feels like {weather.current.feels_like}°C</p>
               )}
@@ -149,7 +171,7 @@ const Weather = () => {
 
         {/* 7-Day Forecast */}
         <motion.div
-          className="glass-card rounded-2xl p-6 mb-8"
+          className="glass-card rounded-2xl p-6 mb-8 bg-background/20 backdrop-blur-xl border-white/10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -176,7 +198,7 @@ const Weather = () => {
 
         {/* Farming Alerts */}
         <motion.div
-          className="glass-card rounded-2xl p-6"
+          className="glass-card rounded-2xl p-6 bg-background/20 backdrop-blur-xl border-white/10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -202,6 +224,7 @@ const Weather = () => {
         </motion.div>
       </div>
     </main>
+    </div>
   );
 };
 

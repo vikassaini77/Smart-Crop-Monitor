@@ -7,6 +7,7 @@ from celery import shared_task
 from ultralytics import YOLO
 from backend.database import SessionLocal
 from backend.models_db import Job, Result
+from backend.db_logger import log_detection
 
 # Load YOLO Model for the worker
 model_path = os.path.join(os.path.dirname(__file__), '..', 'best.pt') if not os.path.exists('best.pt') else 'best.pt'
@@ -82,7 +83,27 @@ def process_image_batch(self, job_id, image_paths):
                             box_x1=x1, box_y1=y1, box_x2=x2, box_y2=y2
                         ))
 
-                if not has_valid_detection:
+                if has_valid_detection:
+                    # Draw boxes for all valid detections and save the image
+                    img = cv2.imread(file_path)
+                    if img is not None:
+                        for box in result.boxes:
+                            cls_id = int(box.cls[0])
+                            pest_name = yolo_model.names.get(cls_id, "Unknown")
+                            if is_valid_detection(pest_name, box, result.orig_shape):
+                                bx1, by1, bx2, by2 = map(int, box.xyxy[0])
+                                conf = float(box.conf[0]) * 100
+                                color = (0, 0, 255) if get_severity(pest_name) == "critical" else (0, 165, 255)
+                                cv2.rectangle(img, (bx1, by1), (bx2, by2), color, 3)
+                                cv2.putText(img, f"{pest_name} {conf:.1f}%", (bx1, max(10, by1-10)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
+                        cv2.imwrite(file_path, img)
+                        
+                        # Log to Supabase for the History page
+                        action = f"Consider targeted pesticide or physical removal for {pest_name}."
+                        image_url = f"http://localhost:8000/static/jobs/{job_id}/{file_name}"
+                        # db_logger expects confidence as a fraction (0.0 to 1.0)
+                        log_detection(pest_name, confidence / 100.0, get_severity(pest_name), action, image_url)
+                else:
                     db.add(Result(
                         job_id=job.id, file_name=file_name, pest_name="None",
                         confidence=0.0, severity="low"

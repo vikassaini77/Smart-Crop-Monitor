@@ -1,20 +1,25 @@
 import os
 import json
-import google.generativeai as genai
 
-# Configure Google Gemini AI
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
+# Try to import groq
+try:
+    from groq import Groq
+except ImportError:
+    Groq = None
+
+# Configure Groq AI
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 def generate_pest_insights(pest_name: str, confidence: float, count: int = 1) -> dict:
     """
-    Calls Gemini API to generate structured, farmer-friendly agricultural insights
+    Calls Groq API to generate structured, farmer-friendly agricultural insights
     for a detected pest returning a guaranteed JSON dictionary.
     """
-    if not GEMINI_API_KEY:
-        print("[AI Insignts] GEMINI_API_KEY missing. Returning fallback data locally.")
+    if not GROQ_API_KEY or not Groq:
+        print("[AI Insights] GROQ_API_KEY or groq package missing. Returning fallback data locally.")
         return _fallback_insight(pest_name, confidence, count)
+
+    client = Groq(api_key=GROQ_API_KEY)
 
     prompt = f"""
 You are an agricultural AI assistant integrated into a pest detection system.
@@ -56,15 +61,15 @@ Rules:
 Return ONLY valid JSON. No markdown enclosures.
 """
     try:
-        model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
-            generation_config={"response_mime_type": "application/json"}
+        response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{"role": "user", "content": prompt}],
+            response_format={"type": "json_object"}
         )
-        response = model.generate_content(prompt)
         # Parse JSON
-        return json.loads(response.text)
+        return json.loads(response.choices[0].message.content)
     except Exception as e:
-        print(f"[AI Insights] Gemini API Failed: {e}")
+        print(f"[AI Insights] Groq API Failed: {e}")
         return _fallback_insight(pest_name, confidence, count)
 
 

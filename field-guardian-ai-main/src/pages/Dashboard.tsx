@@ -3,13 +3,27 @@ import { motion } from "framer-motion";
 import { HeartPulse, Bug, Droplets, Thermometer, TrendingUp, AlertTriangle, Activity, Eye, Bell } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { supabase } from "@/integrations/supabase/client";
+import DataMeshBackground from "@/components/DataMeshBackground";
+import { API_BASE_URL } from "@/lib/api";
+
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
 
 const StatCard = ({ icon: Icon, label, value, color, sub }: { icon: any; label: string; value: string; color: string; sub?: string }) => (
   <motion.div
-    className="glass-card rounded-2xl p-5 glow-pulse"
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
+    variants={itemVariants}
+    className="glass-card rounded-2xl p-5 glow-pulse bg-background/20 backdrop-blur-xl border-white/10 hover:border-primary/30 transition-all cursor-default"
   >
     <div className="flex items-start justify-between mb-3">
       <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${color}20` }}>
@@ -49,7 +63,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchIoT = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/iot_status");
+        const res = await fetch(`${API_BASE_URL}/api/iot_status`);
         if (res.ok) {
           const data = await res.json();
           setIotStatus(data);
@@ -142,10 +156,12 @@ const Dashboard = () => {
   };
 
   return (
-    <main className="pt-20 pb-12 min-h-screen">
-      <div className="container mx-auto px-4">
-        <motion.div className="mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="font-display text-3xl md:text-4xl mb-2">
+    <div className="relative min-h-screen">
+      <DataMeshBackground />
+      <main className="pt-20 pb-12 relative z-10">
+        <div className="container mx-auto px-4">
+          <motion.div className="mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <h1 className="font-display text-4xl md:text-5xl mb-2 tracking-tight">
             Farm <span className="text-gradient">Dashboard</span>
           </h1>
           <p className="text-muted-foreground">
@@ -156,24 +172,29 @@ const Dashboard = () => {
         </motion.div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <motion.div 
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
           <StatCard icon={HeartPulse} label="Crop Health" value={`${healthPercent}%`} color="hsl(120 50% 45%)" />
           <StatCard icon={Bug} label="Pests Detected" value={`${stats.pests}`} color="hsl(0 70% 50%)" />
           <StatCard icon={Droplets} label="Total Scans" value={`${stats.total}`} color="hsl(200 70% 55%)" />
           <StatCard icon={AlertTriangle} label="High Risk" value={`${stats.highRisk}`} color="hsl(45 80% 55%)" />
-        </div>
+        </motion.div>
 
         {/* Arduino Relay Status */}
         <motion.div
-          className="glass-card rounded-2xl p-6 mb-8"
+          className="glass-card rounded-2xl p-6 mb-8 bg-background/20 backdrop-blur-xl border-white/10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
         >
           <div className="flex items-center gap-2 mb-4">
             <Activity className="w-5 h-5 text-glow-green" />
-            <h3 className="font-display text-xl text-foreground">Hardware Control Relays (Arduino)</h3>
-            <span className={`text-xs ml-auto font-medium px-3 py-1 rounded-full ${iotStatus.status === 'Standby' ? 'bg-secondary text-muted-foreground' : 'bg-destructive/20 text-destructive animate-pulse'}`}>
+            <h3 className="font-display text-2xl text-foreground tracking-tight">Hardware Control Relays</h3>
+            <span className={`text-xs ml-auto font-medium px-3 py-1 rounded-full ${iotStatus.status === 'Standby' ? 'bg-secondary text-muted-foreground' : 'bg-destructive/20 text-destructive animate-pulse shadow-[0_0_10px_hsl(var(--destructive)/0.3)]'}`}>
               {iotStatus.status.toUpperCase()}
             </span>
           </div>
@@ -199,14 +220,14 @@ const Dashboard = () => {
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
           {/* Chart */}
           <motion.div
-            className="glass-card rounded-2xl p-6 lg:col-span-2"
+            className="glass-card rounded-2xl p-6 lg:col-span-2 bg-background/20 backdrop-blur-xl border-white/10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <div className="flex items-center gap-2 mb-4">
-              <Activity className="w-4 h-4 text-primary" />
-              <h3 className="font-display text-lg">Detection Confidence Over Time</h3>
+            <div className="flex items-center gap-2 mb-6">
+              <Activity className="w-5 h-5 text-primary" />
+              <h3 className="font-display text-xl tracking-tight">Detection Confidence Over Time</h3>
             </div>
             <ResponsiveContainer width="100%" height={220}>
               <AreaChart data={chartData}>
@@ -227,7 +248,7 @@ const Dashboard = () => {
 
           {/* Alerts */}
           <motion.div
-            className="glass-card rounded-2xl p-6"
+            className="glass-card rounded-2xl p-6 bg-background/20 backdrop-blur-xl border-white/10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
@@ -262,7 +283,7 @@ const Dashboard = () => {
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Pest Frequency */}
           <motion.div
-            className="glass-card rounded-2xl p-6"
+            className="glass-card rounded-2xl p-6 bg-background/20 backdrop-blur-xl border-white/10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -284,7 +305,7 @@ const Dashboard = () => {
 
           {/* Recent Detections */}
           <motion.div
-            className="glass-card rounded-2xl p-6"
+            className="glass-card rounded-2xl p-6 bg-background/20 backdrop-blur-xl border-white/10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
@@ -319,6 +340,7 @@ const Dashboard = () => {
         </div>
       </div>
     </main>
+    </div>
   );
 };
 

@@ -32,8 +32,11 @@ async def generate_frames_async(request: Request):
     global latest_diagnosis, last_detected_pest, fallback_yolo_name
     
     cap = cv2.VideoCapture(0)
+    
+    pest_visible_since = None
+    last_seen_time = 0
     last_eval_time = 0
-    EVAL_COOLDOWN = 6 # Can be faster since we are running locally offline
+    EVAL_COOLDOWN = 8 # Wait 8 seconds before logging
     
     print("\nStarting 100% Offline Local AI Tracking System...")
     
@@ -96,37 +99,94 @@ async def generate_frames_async(request: Request):
                     
                     cv2.putText(frame, display_text, (x1, max(20, y1 - 10)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
             
-            # --- Fire Action Background Thread ONLY if YOLO spotted something ---
-            current_time = time.time()
-            if has_bounding_box and (current_time - last_eval_time >= EVAL_COOLDOWN):
-                last_eval_time = current_time
-                
-                print(f"\n[LOCAL AI] 🎯 YOLO Spotted: {fallback_yolo_name} ({int(top_confidence*100)}%)")
-                
+            # --- HARDWARE ACTION (Runs instantly every frame) ---
+            if not has_bounding_box:
+                arduino.send_signal('0')
+            else:
                 best_pest = fallback_yolo_name.title()
                 severity = "low"
-                if best_pest.lower() in DANGEROUS_PESTS: severity = "critical"
-                elif best_pest != "Unknown": severity = "medium"
+                MEDIUM_PESTS = ["snail", "snails", "ant", "ants", "slug", "slugs"]
                 
-                latest_diagnosis = {"pest": best_pest, "confidence": top_confidence, "severity": severity}
-                
-                # --- ACTION ENGINE (IoT + DB + Emails) ---
+                if best_pest.lower() in DANGEROUS_PESTS: 
+                    severity = "critical"
+                elif best_pest.lower() in MEDIUM_PESTS: 
+                    severity = "medium"
+                elif best_pest != "Unknown": 
+                    severity = "low"
+                    
                 if best_pest == "None" or best_pest == "Unknown":
                     arduino.send_signal('0')
                 else:
                     if severity == "critical": arduino.send_signal('3')
                     elif severity in ["high", "medium"]: arduino.send_signal('2')
                     else: arduino.send_signal('1')
-                        
-                    if best_pest != last_detected_pest:
-                        action_taken = f"Arduino Triggered ({severity})"
-                        if severity in ["high", "critical"] and top_confidence > 0.60:
-                            log_alert(f"HIGH ALERT: {best_pest}", "Triggered by local YOLO model", severity)
-                            # send_sms_alert(best_pest, top_confidence, "See dashboard")
-                            send_email_alert(best_pest, top_confidence, severity, "Inspect physically.")
+
+            # --- HEAVY ACTIONS: DB + Emails (Runs only after sustained detection) ---
+            current_time = time.time()
+            if has_bounding_box:
+                last_seen_time = current_time
+                if pest_visible_since is None:
+                    pest_visible_since = current_time
+                
+                if (current_time - pest_visible_since >= EVAL_COOLDOWN) and (current_time - last_eval_time >= EVAL_COOLDOWN):
+                    last_eval_time = current_time
+                    
+                    print(f"\n[LOCAL AI] 🎯 YOLO Spotted: {fallback_yolo_name} ({int(top_confidence*100)}%) sustained for 8s")
+                    
+                    best_pest = fallback_yolo_name.title()
+                    severity = "low"
+                    MEDIUM_PESTS = ["snail", "snails", "ant", "ants", "slug", "slugs"]
+                    
+                    if best_pest.lower() in DANGEROUS_PESTS: 
+                        severity = "critical"
+                    elif best_pest.lower() in MEDIUM_PESTS: 
+                        severity = "medium"
+                    elif best_pest != "Unknown": 
+                        severity = "low"
+                    
+                    latest_diagnosis = {"pest": best_pest, "confidence": top_confidence, "severity": severity}
+                    
+                    if best_pest != "None" and best_pest != "Unknown":
+                        if best_pest != last_detected_pest:
+                            # 1. Save frame for history photo
+                            filename = f"detect_{int(current_time)}.jpg"
+                            static_dir = os.path.join(os.path.dirname(__file__), "static")
+                            os.makedirs(static_dir, exist_ok=True)
+                            save_path = os.path.join(static_dir, filename)
+                            cv2.imwrite(save_path, frame)
                             
-                        log_detection(best_pest, top_confidence, severity, action_taken)
-                        last_detected_pest = best_pest
+                            # Construct public URL based on backend running on localhost:8000
+                            image_url = f"http://localhost:8000/static/{filename}"
+                            
+                            # 2. Get richer context from pest_info.json
+                            pest_info_path = os.path.join(os.path.dirname(__file__), 'pest_info.json')
+                            pest_data = {}
+                            try:
+                                with open(pest_info_path, 'r') as f:
+                                    all_info = json.load(f)
+                                    # Try to find a case-insensitive match
+                                    for k, v in all_info.items():
+                                        if k.lower() == best_pest.lower() or k.lower() == best_pest.lower() + "s":
+                                            pest_data = v
+                                            break
+                            except Exception:
+                                pass
+                                
+                            desc = pest_data.get("description", f"AI detected {best_pest} on your crop.")
+                            remedy = pest_data.get("organic_remedy", "Inspect crop manually for physical removal.")
+                            
+                            action_taken = f"📝 **Note:** {desc}\n\n🛡️ **Prescription:** {remedy}"
+                            
+                            if severity in ["high", "critical"] and top_confidence > 0.60:
+                                log_alert(f"HIGH ALERT: {best_pest}", "Triggered by local YOLO model", severity)
+                                send_email_alert(best_pest, top_confidence, severity, remedy)
+                                
+                            log_detection(best_pest, top_confidence, severity, action_taken, image_url)
+                            last_detected_pest = best_pest
+            else:
+                # If we haven't seen the pest for more than 2 seconds, reset the continuous timer
+                if pest_visible_since is not None and (current_time - last_seen_time > 2.0):
+                    pest_visible_since = None
             
             # Stream out to browser
             ret, buffer = cv2.imencode('.jpg', frame)

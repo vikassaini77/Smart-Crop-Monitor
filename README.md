@@ -219,7 +219,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 👨‍💻 Maintainer
 
-**Your Name**  
+**Vikas Saini**  
 *Senior Software Engineer & AI Researcher*  
 [![GitHub](https://img.shields.io/badge/GitHub-Profile-181717?style=flat&logo=github)](https://github.com/) 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=flat&logo=linkedin)](https://linkedin.com/in/)

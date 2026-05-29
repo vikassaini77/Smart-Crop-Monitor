@@ -5,6 +5,7 @@ psycopg2-binary==2.9.9
 alembic==1.13.1
 pydantic>=2.9.0
 deep-sort-realtime==1.3.2
-google-generativeai
+python-dotenv
+groq
 python-multipart
 uvicorn

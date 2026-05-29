@@ -15,6 +15,7 @@ interface DetectionResult {
   description?: string;
   file_name?: string;
   frame_timestamp?: number;
+  image_url?: string;
 }
 
 const Detect = () => {
@@ -254,11 +255,15 @@ const Detect = () => {
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Upload Section */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-              <div
-                className="glass-card rounded-2xl p-8 border-2 border-dashed border-border/50 hover:border-primary/30 transition-colors cursor-pointer min-h-[320px] flex flex-col items-center justify-center"
+            <AnimatePresence mode="wait">
+              <motion.div
+                className={`glass-card rounded-2xl p-8 border-2 border-dashed transition-all cursor-pointer min-h-[320px] flex flex-col items-center justify-center relative overflow-hidden ${selectedFiles.length > 0 ? 'border-primary/50 bg-primary/5' : 'border-border/50 hover:border-primary/40 hover:bg-white/[0.02]'}`}
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
                 onClick={() => selectedFiles.length === 0 && fileInputRef.current?.click()}
+                whileHover={selectedFiles.length === 0 ? { scale: 1.02 } : { scale: 1 }}
+                whileTap={selectedFiles.length === 0 ? { scale: 0.98 } : { scale: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
                 {selectedFiles.length > 0 ? (
                   <div className="w-full relative flex flex-col items-center">
@@ -316,7 +321,8 @@ const Detect = () => {
                     </Button>
                   </>
                 )}
-              </div>
+              </motion.div>
+            </AnimatePresence>
             <input ref={fileInputRef} type="file" multiple accept="image/*,video/mp4,video/avi,video/quicktime" className="hidden" onChange={(e) => e.target.files && handleFiles(e.target.files)} />
           </motion.div>
 
@@ -352,9 +358,13 @@ const Detect = () => {
                              const isHealthy = res.pest_name === "None";
                              const nameDisplay = isHealthy ? "Healthy Region" : res.pest_name;
                                 return (
-                            <div key={i} 
+                            <motion.div key={i} 
                                  onClick={() => handlePestClick(res)}
-                                 className={`p-3 rounded-xl border transition-all ${isHealthy ? "bg-glow-green/10 border-glow-green/20" : "cursor-pointer hover:shadow-lg " + (severityBg[res.severity] || severityBg.medium)}`}>
+                                 className={`p-4 rounded-xl border transition-all ${isHealthy ? "bg-glow-green/10 border-glow-green/20" : "cursor-pointer hover:shadow-lg hover:-translate-y-1 " + (severityBg[res.severity] || severityBg.medium)}`}
+                                 initial={{ opacity: 0, y: 10 }}
+                                 animate={{ opacity: 1, y: 0 }}
+                                 transition={{ delay: i * 0.05 }}
+                            >
                                 <div className="flex justify-between items-start">
                                     <div className="flex items-center gap-2">
                                         {!isHealthy && <Bug className="w-4 h-4 text-destructive" />}
@@ -362,11 +372,18 @@ const Detect = () => {
                                     </div>
                                     <p className={`text-xs font-bold ${severityColors[res.severity]}`}>{res.severity.toUpperCase()}</p>
                                 </div>
-                                <div className="mt-1 flex justify-between text-xs text-muted-foreground">
-                                    <span>{res.file_name ? res.file_name : `Video at sec ${res.frame_timestamp?.toFixed(2)}`}</span>
-                                    <span>Conf: {res.confidence.toFixed(1)}%</span>
+                                <div className="mt-2 flex flex-col gap-2 text-xs text-muted-foreground">
+                                    <div className="flex justify-between">
+                                        <span>{res.file_name ? res.file_name : `Video at sec ${res.frame_timestamp?.toFixed(2)}`}</span>
+                                        <span>Conf: {res.confidence.toFixed(1)}%</span>
+                                    </div>
+                                    {res.image_url && (
+                                        <div className="mt-2 w-full h-32 sm:h-48 rounded-lg overflow-hidden border border-border/50 bg-black/40">
+                                            <img src={res.image_url} alt={res.pest_name} className="w-full h-full object-contain" />
+                                        </div>
+                                    )}
                                 </div>
-                            </div>
+                            </motion.div>
                         )})}
                       </div>
                   )}

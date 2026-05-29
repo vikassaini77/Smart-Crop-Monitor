@@ -6,7 +6,7 @@ from email.message import EmailMessage
 # ==========================================
 SENDER_EMAIL = "vikassn44@gmail.com"    # e.g., "farm.monitor@gmail.com"
 RECEIVER_EMAIL = "vikassn519@gmail.com"  # where you want alerts sent
-APP_PASSWORD = "cvid gbno uoss ukad" # Not your normal Google password!
+APP_PASSWORD = "lyhc uwcm pdyi ijac" # Not your normal Google password!
 
 def send_email_alert(pest_name, confidence, severity, recommendation):
     """

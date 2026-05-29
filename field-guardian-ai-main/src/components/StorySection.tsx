@@ -3,24 +3,24 @@ import { ArrowRight } from "lucide-react";
 
 const steps = [
   {
-    emoji: "😟",
-    title: "The Problem",
-    text: "Farmers lose up to 40% of crops to undetected pests and diseases every year.",
+    emoji: "🌱",
+    title: "The Unseen Threat",
+    text: "Generations of hard work can be devastated by pests and diseases that strike silently.",
   },
   {
-    emoji: "📸",
-    title: "Capture",
-    text: "Simply take a photo of your crops or enable live monitoring with your camera.",
+    emoji: "👁️",
+    title: "A New Vision",
+    text: "Turn your phone or edge cameras into a vigilant eye. Capture the invisible details hiding in your fields.",
   },
   {
     emoji: "🧠",
-    title: "AI Analysis",
-    text: "Our AI instantly identifies threats, diseases, and health issues with precision.",
+    title: "Agronomy Intelligence",
+    text: "Our AI acts as an expert companion, instantly identifying threats before they spread.",
   },
   {
-    emoji: "✅",
-    title: "Action",
-    text: "Get personalized treatment recommendations and protect your harvest.",
+    emoji: "🛡️",
+    title: "Preserving the Harvest",
+    text: "Receive precise, actionable guidance. Protect your crops, your livelihood, and your legacy.",
   },
 ];
 
@@ -35,10 +35,10 @@ const StorySection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="font-display text-3xl md:text-4xl mb-4">
+          <h2 className="font-display text-4xl md:text-5xl mb-4 tracking-tight">
             From <span className="text-gradient">Problem to Protection</span>
           </h2>
-          <p className="text-muted-foreground text-lg">How Smart Crop Monitor works for you.</p>
+          <p className="text-muted-foreground text-lg tracking-wide uppercase text-sm font-medium mt-6">How Smart Crop Monitor works for you.</p>
         </motion.div>
 
         <div className="max-w-3xl mx-auto space-y-0">
@@ -56,13 +56,17 @@ const StorySection = () => {
                 <div className="absolute left-6 top-16 w-px h-16 bg-border" />
               )}
 
-              <div className="w-12 h-12 rounded-xl glass-card flex items-center justify-center text-2xl shrink-0">
+              <motion.div 
+                className="w-14 h-14 rounded-2xl glass-card flex items-center justify-center text-2xl shrink-0 z-10"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
                 {step.emoji}
-              </div>
+              </motion.div>
 
-              <div className="pb-12">
-                <h3 className="font-display text-lg text-foreground mb-1">{step.title}</h3>
-                <p className="text-muted-foreground text-sm">{step.text}</p>
+              <div className="pb-16 pt-3">
+                <h3 className="font-display text-xl text-foreground mb-2 tracking-tight">{step.title}</h3>
+                <p className="text-muted-foreground text-base leading-relaxed">{step.text}</p>
               </div>
 
               {i < steps.length - 1 && (

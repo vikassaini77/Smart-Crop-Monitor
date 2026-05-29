@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, MapPin, Leaf, Settings, Globe, Pencil, Loader2, X, Save } from "lucide-react";
+import { User, MapPin, Leaf, Settings, Globe, Pencil, Loader2, X, Save, Trophy, Activity, Wifi, Shield, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import AuroraBackground from "@/components/AuroraBackground";
 
 interface ProfileData {
   full_name: string | null;
@@ -108,8 +109,10 @@ const Profile = () => {
   const displayLanguage = profile?.language_preference || "English";
 
   return (
-    <main className="pt-20 pb-12 min-h-screen">
-      <div className="container mx-auto px-4 max-w-2xl">
+    <div className="relative min-h-screen">
+      <AuroraBackground />
+      <main className="pt-20 pb-12 relative z-10">
+        <div className="container mx-auto px-4 max-w-3xl">
         <motion.div className="mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="font-display text-3xl md:text-4xl mb-2">
             Your <span className="text-gradient">Profile</span>
@@ -119,7 +122,7 @@ const Profile = () => {
 
         {/* Profile Card */}
         <motion.div
-          className="glass-card rounded-2xl p-8 mb-6"
+          className="glass-card rounded-2xl p-8 mb-6 bg-background/20 backdrop-blur-xl border-white/10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -195,15 +198,94 @@ const Profile = () => {
           </AnimatePresence>
         </motion.div>
 
+        {/* New Profile Information Sections */}
         {!editing && (
-          <motion.div className="mt-6 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
-            <Button onClick={() => setEditing(true)} className="gap-2 border-border hover:bg-secondary" variant="outline">
-              <Pencil className="w-4 h-4" /> Edit Profile
+          <div className="grid md:grid-cols-2 gap-6 mt-6">
+            
+            {/* Farm Statistics */}
+            <motion.div className="glass-card rounded-2xl p-6 bg-background/20 backdrop-blur-xl border-white/10" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+              <div className="flex items-center gap-2 mb-4">
+                <Activity className="w-5 h-5 text-glow-green" />
+                <h3 className="font-display text-xl text-foreground">Farm Statistics</h3>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center border-b border-border/30 pb-2">
+                  <span className="text-sm text-muted-foreground">Total Detections Run</span>
+                  <span className="text-sm font-medium text-foreground">142</span>
+                </div>
+                <div className="flex justify-between items-center border-b border-border/30 pb-2">
+                  <span className="text-sm text-muted-foreground">Acres Protected</span>
+                  <span className="text-sm font-medium text-foreground">{displaySize !== "Not set" ? displaySize : "12 Hectares"}</span>
+                </div>
+                <div className="flex justify-between items-center pb-2">
+                  <span className="text-sm text-muted-foreground">Community Points</span>
+                  <span className="text-sm font-medium text-sunlight">840 XP</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Achievements & Badges */}
+            <motion.div className="glass-card rounded-2xl p-6 bg-background/20 backdrop-blur-xl border-white/10" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+              <div className="flex items-center gap-2 mb-4">
+                <Trophy className="w-5 h-5 text-sunlight" />
+                <h3 className="font-display text-xl text-foreground">Achievements</h3>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <div className="flex flex-col items-center p-3 bg-secondary/30 rounded-xl border border-white/10 flex-1 hover:border-primary/40 transition-colors">
+                  <Shield className="w-6 h-6 text-primary mb-1" />
+                  <span className="text-xs font-medium text-center">Pest Guardian</span>
+                </div>
+                <div className="flex flex-col items-center p-3 bg-secondary/30 rounded-xl border border-white/10 flex-1 hover:border-sunlight/40 transition-colors">
+                  <Star className="w-6 h-6 text-sunlight mb-1" />
+                  <span className="text-xs font-medium text-center">Early Adopter</span>
+                </div>
+                <div className="flex flex-col items-center p-3 bg-secondary/30 rounded-xl border border-white/10 flex-1 opacity-40 grayscale">
+                  <Leaf className="w-6 h-6 text-muted-foreground mb-1" />
+                  <span className="text-xs font-medium text-center">Harvest King</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Hardware Hub */}
+            <motion.div className="glass-card rounded-2xl p-6 md:col-span-2 bg-background/20 backdrop-blur-xl border-white/10" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+              <div className="flex items-center gap-2 mb-4">
+                <Wifi className="w-5 h-5 text-primary" />
+                <h3 className="font-display text-xl text-foreground">Connected Hardware</h3>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="flex items-center justify-between p-3 bg-secondary/30 rounded-xl border border-white/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-glow-green shadow-[0_0_8px_hsl(var(--glow-green))]" />
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Main Field Camera</p>
+                      <p className="text-xs text-muted-foreground">Zone A (Active)</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-secondary/30 rounded-xl border border-white/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-sunlight shadow-[0_0_8px_hsl(var(--sunlight))]" />
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Irrigation Sensor Node</p>
+                      <p className="text-xs text-muted-foreground">Zone B (Standby)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {!editing && (
+          <motion.div className="mt-8 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+            <Button onClick={() => setEditing(true)} className="gap-2 border-white/20 bg-background/30 backdrop-blur-xl hover:bg-background/50" variant="outline">
+              <Pencil className="w-4 h-4" /> Edit Profile Settings
             </Button>
           </motion.div>
         )}
       </div>
     </main>
+    </div>
   );
 };
 

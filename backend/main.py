@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Request, Depends, BackgroundTasks, Security
 from fastapi.security.api_key import APIKeyHeader
+from pydantic import BaseModel
 from starlette.status import HTTP_403_FORBIDDEN
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,9 +9,15 @@ import os
 import uuid
 import json
 import shutil
-from typing import List
+from typing import List, Optional
 from PIL import Image
 from fastapi.responses import StreamingResponse
+from dotenv import load_dotenv
+import os
+
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path=env_path)
+
 
 # Backend internal imports
 from backend.real_time_detector import generate_frames_async
@@ -232,7 +239,7 @@ def get_job_status(job_id: str, db: Session = Depends(get_db), api_key: str = De
     return {"job_id": job.id, "status": job.status, "created_at": job.created_at, "completed_at": job.completed_at}
 
 @app.get("/results/{job_id}")
-def get_job_results(job_id: str, db: Session = Depends(get_db), api_key: str = Depends(verify_security)):
+def get_job_results(job_id: str, request: Request, db: Session = Depends(get_db), api_key: str = Depends(verify_security)):
     if not SCALABLE_ENABLED:
         raise HTTPException(status_code=501, detail="Batch scaling disabled.")
         
@@ -245,14 +252,21 @@ def get_job_results(job_id: str, db: Session = Depends(get_db), api_key: str = D
         
     results = db.query(Result).filter(Result.job_id == job_id).all()
     
+    base_url = str(request.base_url)
+    
     output = []
     for r in results:
+        image_url = None
+        if r.file_name:
+            image_url = f"{base_url}static/jobs/{job_id}/{r.file_name}"
+            
         output.append({
             "pest_name": r.pest_name,
             "confidence": r.confidence,
             "severity": r.severity,
             "file_name": r.file_name,
             "frame_timestamp": r.frame_timestamp,
+            "image_url": image_url,
             "bbox": {"x1": r.box_x1, "y1": r.box_y1, "x2": r.box_x2, "y2": r.box_y2}
         })
         
@@ -267,6 +281,119 @@ def get_pest_insights(pest_name: str, confidence: float, count: int = 1, api_key
         return insights
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+class WeatherRequest(BaseModel):
+    lat: float
+    lon: float
+    location: str
+
+@app.post("/api/weather")
+def get_weather(req: WeatherRequest, api_key: str = Depends(verify_security)):
+    """Mock weather data for demo purposes since Supabase Edge Function is not deployed"""
+    return {
+        "location_name": req.location,
+        "current": {
+            "temp": 24,
+            "feels_like": 25,
+            "humidity": 85,
+            "wind_speed": 18.5,
+            "description": "heavy rain",
+            "icon": "🌧️",
+            "uv_index": 2,
+            "visibility": 4
+        },
+        "forecast": [
+            {"day": "Mon", "temp_max": 34, "temp_min": 24, "rain_chance": 0, "icon": "☀️"},
+            {"day": "Tue", "temp_max": 35, "temp_min": 25, "rain_chance": 10, "icon": "🌤️"},
+            {"day": "Wed", "temp_max": 33, "temp_min": 24, "rain_chance": 40, "icon": "🌦️"},
+            {"day": "Thu", "temp_max": 31, "temp_min": 23, "rain_chance": 70, "icon": "🌧️"},
+            {"day": "Fri", "temp_max": 32, "temp_min": 23, "rain_chance": 20, "icon": "⛅"},
+            {"day": "Sat", "temp_max": 33, "temp_min": 24, "rain_chance": 0, "icon": "☀️"},
+            {"day": "Sun", "temp_max": 34, "temp_min": 25, "rain_chance": 0, "icon": "☀️"},
+        ],
+        "farming_alerts": [
+            {
+                "type": "warning",
+                "title": "High Heat Index",
+                "message": "Temperatures will exceed 34°C. Ensure adequate irrigation to prevent crop heat stress."
+            },
+            {
+                "type": "info",
+                "title": "Pesticide Window",
+                "message": "Clear skies tomorrow morning provide an optimal 4-hour window for spraying."
+            }
+        ]
+    }
+
+class ChatRequest(BaseModel):
+    messages: list
+    detectionContext: Optional[str] = None
+
+@app.post("/api/chat")
+async def chat_endpoint(req: ChatRequest, api_key: str = Depends(verify_security)):
+    try:
+        from groq import Groq
+    except ImportError:
+        Groq = None
+    
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    if GROQ_API_KEY and Groq:
+        client = Groq(api_key=GROQ_API_KEY)
+    else:
+        def fallback_stream():
+            msg = "Hello! I am your local CropAI fallback assistant. Please set your `GROQ_API_KEY` environment variable in the backend to enable full AI chat capabilities! 🌱"
+            yield f"data: {json.dumps({'choices': [{'delta': {'content': msg}}]})}\n\n"
+            yield "data: [DONE]\n\n"
+        return StreamingResponse(fallback_stream(), media_type="text/event-stream")
+        
+    SYSTEM_PROMPT = """You are "CropAI", a friendly and knowledgeable AI farming assistant for the Smart Crop Monitor platform. You help farmers with:
+1. **Pest & Disease Identification**: Identify pests and diseases from descriptions, suggest treatments
+2. **Crop Management**: Advice on fertilizers, irrigation, soil health, crop rotation
+3. **Weather Advisory**: How weather conditions affect crops, when to plant/harvest
+4. **Treatment Recommendations**: Organic and chemical treatment options with dosage
+5. **General Farming**: Best practices, yield optimization, sustainable farming
+
+Guidelines:
+- Be warm, encouraging, and use simple language (farmers may not be tech-savvy)
+- Give practical, actionable advice
+- When suggesting chemicals, always mention safety precautions
+- Suggest organic alternatives when possible
+- If unsure, recommend consulting a local agricultural extension officer
+- Keep responses concise but helpful
+- Use emojis occasionally to be friendly 🌱
+
+You have access to the user's recent detection history which may be provided in the conversation context."""
+
+    system_content = SYSTEM_PROMPT
+    if req.detectionContext:
+        system_content += f"\n\nRecent detection history for this user:\n{req.detectionContext}"
+        
+    groq_messages = [{"role": "system", "content": system_content}]
+    for m in req.messages:
+        role = "assistant" if m.get("role") == "assistant" else "user"
+        groq_messages.append({"role": role, "content": m.get("content", "")})
+        
+    def stream_generator():
+        try:
+            response = client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=groq_messages,
+                stream=True
+            )
+            for chunk in response:
+                content = chunk.choices[0].delta.content
+                if content:
+                    data = json.dumps({"choices": [{"delta": {"content": content}}]})
+                    yield f"data: {data}\n\n"
+            yield "data: [DONE]\n\n"
+        except Exception as e:
+            print(f"Chat error: {e}")
+            error_str = str(e)
+            error_msg = f"\n\n**API Error:** {error_str}"
+            yield f"data: {json.dumps({'choices': [{'delta': {'content': error_msg}}]})}\n\n"
+            yield "data: [DONE]\n\n"
+            
+    return StreamingResponse(stream_generator(), media_type="text/event-stream")
 
 # The main entry point to run the server
 if __name__ == "__main__":
